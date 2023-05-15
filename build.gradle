@@ -55,9 +55,9 @@ subprojects {
 
     tasks.named("compileTestJava") {
         java {
-            toolchain {
-                languageVersion = JavaLanguageVersion.of(17)
-            }
+//            toolchain {
+//                languageVersion = JavaLanguageVersion.of(17)
+//            }
         }
     }
 
@@ -65,7 +65,7 @@ subprojects {
     def javadocConfig = {
         options {
             links(
-                    'https://docs.oracle.com/en/java/javase/16/docs/api/',
+                    'https://docs.oracle.com/javase/8/docs/api',
                     'https://hub.spigotmc.org/javadocs/spigot/',
                     'https://javadoc.io/doc/org.jetbrains/annotations/19.0.0'
             )
@@ -83,13 +83,12 @@ subprojects {
 
 
     javadoc { configure javadocConfig }
-    aggregateJavadoc { configure javadocConfig }
+    aggregateJavadoc {
+        configure javadocConfig
+    }
 
     java {
         withJavadocJar()
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(8)
-        }
     }
     String moduleName = it.name
 
@@ -126,7 +125,9 @@ subprojects {
 dependencies {
     implementation project(':core')
     implementation project(':data-structures')
+    implementation project(':nms-generic')
     implementation project(path: ':nms-1.19.4', configuration: 'reobf')
+    implementation project(':nms-1.16.5')
 }
 
 shadowJar {
