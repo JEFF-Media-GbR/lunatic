@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.jeff_media.lunatic'
-version = '1.3-SNAPSHOT'
+version = '1.7-SNAPSHOT'
 
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
@@ -19,8 +19,6 @@ subprojects {
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
-
-    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
     repositories {
         mavenLocal()
@@ -80,6 +78,9 @@ subprojects {
 
     java {
         withJavadocJar()
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(8)
+        }
     }
     String moduleName = it.name
 
@@ -96,6 +97,7 @@ subprojects {
                 groupId = this.group
                 artifactId = moduleName
                 version = this.version
+
                 publication.artifact(jar)
                 publication.artifact(javadocJar)
             }
@@ -115,6 +117,7 @@ subprojects {
 dependencies {
     implementation project(':core')
     implementation project(':data-structures')
+    implementation project(path: ':nms-1.19.4', configuration: 'reobf')
 }
 
 shadowJar {
