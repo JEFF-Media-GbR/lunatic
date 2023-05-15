@@ -6,7 +6,7 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.jeff_media'
+group = 'com.jeff_media.lunatic'
 version = '1.0-SNAPSHOT'
 
 compileJava.options.encoding = "UTF-8"
@@ -15,6 +15,9 @@ compileTestJava.options.encoding = "UTF-8"
 jar.enabled = false
 
 subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'maven-publish'
 
     tasks.register('javadocJar', Jar) {
         dependsOn javadoc
@@ -37,6 +40,28 @@ subprojects {
 
     javadoc { configure javadocConfig }
     aggregateJavadoc { configure javadocConfig }
+
+    def moduleName = it.name
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = this.group
+                artifactId = moduleName
+                version = this.version
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                credentials {
+                    username "$jeffMediaPublicUser"
+                    password "$jeffMediaPublicPassword"
+                }
+                url = 'https://repo.jeff-media.com/public'
+            }
+        }
+    }
 }
 
 allprojects {
@@ -57,6 +82,8 @@ allprojects {
             url = "https://oss.sonatype.org/content/groups/public/"
         }
     }
+
+
 }
 
 dependencies {
@@ -82,10 +109,10 @@ publishing {
     repositories {
         maven {
             credentials {
-                username = "jaegermeister"
-                password = System.getenv("JEFF_MEDIA_REPO_SECRET")
+                username "$jeffMediaPublicUser"
+                password "$jeffMediaPublicPassword"
             }
-            url = 'https://repo.jeff-media.com/public/'
+            url = 'https://repo.jeff-media.com/public'
         }
     }
 }
