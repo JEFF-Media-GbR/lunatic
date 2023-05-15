@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.jeff_media.lunatic'
-version = '1.0-SNAPSHOT'
+version = '1.2-SNAPSHOT'
 
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
@@ -49,6 +49,16 @@ subprojects {
         from javadoc.destinationDir
     }
 
+    tasks.named('test', Test) {
+        useJUnitPlatform()
+
+        maxHeapSize = '1G'
+
+        testLogging {
+            events "passed"
+        }
+    }
+
 
     def javadocConfig = {
         options {
@@ -61,6 +71,13 @@ subprojects {
         }
     }
 
+    dependencies {
+        // https://mvnrepository.com/artifact/org.jetbrains/annotations
+        compileOnly 'org.jetbrains:annotations:24.0.1'
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+
+    }
+
 
     javadoc { configure javadocConfig }
     aggregateJavadoc { configure javadocConfig }
@@ -70,21 +87,21 @@ subprojects {
     }
     String moduleName = it.name
 
-    shadowJar {
-        archiveClassifier.set('')
-        archiveFileName.set("lunatic-" + moduleName + this.version)
-    }
+//    shadowJar {
+//        archiveClassifier.set('')
+//        archiveFileName.set("lunatic-" + moduleName + this.version)
+//    }
 
     moduleName = "lunatic-" + moduleName
 
     publishing {
         publications {
-            shadow(MavenPublication) { publication ->
-                project.shadow.component(publication)
+            maven(MavenPublication) { publication ->
                 groupId = this.group
                 artifactId = moduleName
                 version = this.version
-                publication.artifact(aggregateJavadocJar)
+                publication.artifact(jar)
+                publication.artifact(javadocJar)
             }
         }
         repositories {

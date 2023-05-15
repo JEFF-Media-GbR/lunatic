@@ -1,5 +1,7 @@
 package com.jeff_media.lunatic.data;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Represents a queue-like buffer that holds a fixed amount of items.
  */
@@ -22,7 +24,7 @@ public class BufferQueue<T> {
      * Add an item at the top of the buffer
      * @param item Item to add
      */
-    public void add(T item) {
+    public void add(@Nullable T item) {
         buffer[index] = item;
         index = (index + 1) % size;
     }
@@ -31,8 +33,8 @@ public class BufferQueue<T> {
      * Get the item at the bottom of the buffer
      * @return Item at the specified index
      */
-    public T get() {
-        return buffer[index == 0 ? size - 1 : index - 1];
+    public @Nullable T get() {
+        return buffer[index];
     }
 
 }
