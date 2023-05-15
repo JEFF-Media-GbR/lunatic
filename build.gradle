@@ -14,10 +14,34 @@ compileTestJava.options.encoding = "UTF-8"
 
 jar.enabled = false
 
-subprojects {
+allprojects {
 
     apply plugin: 'java'
     apply plugin: 'maven-publish'
+
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            name = "jeff-media-public"
+            url = "https://repo.jeff-media.com/public/"
+        }
+        maven {
+            name = "spigotmc-repo"
+            url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/groups/public/"
+        }
+    }
+
+
+}
+
+subprojects {
 
     tasks.register('javadocJar', Jar) {
         dependsOn javadoc
@@ -41,49 +65,38 @@ subprojects {
     javadoc { configure javadocConfig }
     aggregateJavadoc { configure javadocConfig }
 
-    def moduleName = it.name
+    java {
+        withJavadocJar()
+    }
+    String moduleName = it.name
+
+    shadowJar {
+        archiveClassifier.set('')
+        archiveFileName.set("lunatic-" + moduleName + this.version)
+    }
+
+    moduleName = "lunatic-" + moduleName
 
     publishing {
         publications {
-            maven(MavenPublication) {
+            shadow(MavenPublication) { publication ->
+                project.shadow.component(publication)
                 groupId = this.group
                 artifactId = moduleName
                 version = this.version
-                from components.java
+                publication.artifact(aggregateJavadocJar)
             }
         }
         repositories {
             maven {
                 credentials {
-                    username "$jeffMediaPublicUser"
-                    password "$jeffMediaPublicPassword"
+                    username = "$jeffMediaPublicUser"
+                    password = "$jeffMediaPublicPassword"
                 }
                 url = 'https://repo.jeff-media.com/public'
             }
         }
     }
-}
-
-allprojects {
-
-    apply plugin: 'java'
-
-    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
-
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven {
-            name = "spigotmc-repo"
-            url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/groups/public/"
-        }
-    }
-
-
 }
 
 dependencies {
