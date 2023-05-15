@@ -1,7 +1,7 @@
 plugins {
     id "java"
     id "com.github.johnrengelman.shadow" version "7.1.0"
-    id "io.freefair.aggregate-javadoc" version "6.5.0.3"
+    id "io.freefair.aggregate-javadoc" version "6.6.3"
     id "io.freefair.aggregate-javadoc-jar" version "6.6.3"
     id 'maven-publish'
 }
@@ -65,9 +65,9 @@ subprojects {
     def javadocConfig = {
         options {
             links(
-                    'https://docs.oracle.com/javase/8/docs/api',
-                    'https://hub.spigotmc.org/javadocs/spigot/',
-                    'https://javadoc.io/doc/org.jetbrains/annotations/19.0.0'
+//                    'https://docs.oracle.com/javase/8/docs/api',
+//                    'https://hub.spigotmc.org/javadocs/spigot/',
+//                    'https://javadoc.io/doc/org.jetbrains/annotations/19.0.0'
             )
             addStringOption('Xdoclint:none', '-quiet')
             exclude 'com/jeff_media/lunatic/nms/**'
