@@ -3,6 +3,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.1.0"
     id "io.freefair.aggregate-javadoc" version "6.5.0.3"
     id "io.freefair.aggregate-javadoc-jar" version "6.6.3"
+    id 'maven-publish'
 }
 
 group = 'com.jeff_media.lunatic'
@@ -14,10 +15,6 @@ compileTestJava.options.encoding = "UTF-8"
 jar.enabled = false
 
 subprojects {
-
-    java {
-        withJavadocJar()
-    }
 
     tasks.register('javadocJar', Jar) {
         dependsOn javadoc
@@ -69,4 +66,26 @@ dependencies {
 
 shadowJar {
     archiveClassifier.set('')
+}
+
+build {
+    dependsOn(shadowJar, aggregateJavadoc)
+}
+
+publishing {
+    publications {
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
+            publication.artifact(aggregateJavadocJar)
+        }
+    }
+    repositories {
+        maven {
+            credentials {
+                username = "jaegermeister"
+                password = System.getenv("JEFF_MEDIA_REPO_SECRET")
+            }
+            url = 'https://repo.jeff-media.com/public/'
+        }
+    }
 }
