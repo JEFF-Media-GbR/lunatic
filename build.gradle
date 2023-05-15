@@ -6,7 +6,7 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.jeff_media.lunatic'
+group = 'com.jeff_media'
 version = '1.0-SNAPSHOT'
 
 compileJava.options.encoding = "UTF-8"
