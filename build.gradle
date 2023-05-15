@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.jeff_media.lunatic'
-version = '1.7-SNAPSHOT'
+version = '1.8-SNAPSHOT'
 
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
@@ -53,6 +53,14 @@ subprojects {
         }
     }
 
+    tasks.named("compileTestJava") {
+        java {
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(17)
+            }
+        }
+    }
+
 
     def javadocConfig = {
         options {
@@ -62,6 +70,7 @@ subprojects {
                     'https://javadoc.io/doc/org.jetbrains/annotations/19.0.0'
             )
             addStringOption('Xdoclint:none', '-quiet')
+            exclude 'com/jeff_media/lunatic/nms/**'
         }
     }
 
