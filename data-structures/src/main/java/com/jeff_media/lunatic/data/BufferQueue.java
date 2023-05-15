@@ -8,16 +8,17 @@ import org.jetbrains.annotations.Nullable;
 public class BufferQueue<T> {
 
     private final int size;
-    private final Object[] buffer;
+    private final T[] buffer;
     private int index = 0;
 
     /**
      * Create a new BufferQueue instance
      * @param size Size of the buffer
      */
+    @SuppressWarnings("unchecked")
     public BufferQueue(int size) {
         this.size = size;
-        this.buffer = new Object[size];
+        this.buffer = (T[]) new Object[size];
     }
 
     /**
@@ -29,13 +30,9 @@ public class BufferQueue<T> {
         index = (index + 1) % size;
     }
 
-    /**
-     * Get the item at the bottom of the buffer
-     * @return Item at the specified index
-     */
-    @SuppressWarnings("unchecked")
+
     public @Nullable T get() {
-        return (T) buffer[index];
+        return buffer[index];
     }
 
 }
