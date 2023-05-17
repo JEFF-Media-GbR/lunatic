@@ -14,7 +14,6 @@ compileTestJava.options.encoding = "UTF-8"
 
 jar.enabled = false
 
-
 subprojects {
 
     apply plugin: 'java'
@@ -46,31 +45,19 @@ subprojects {
     tasks.named('test', Test) {
         useJUnitPlatform()
 
-        maxHeapSize = '1G'
+        maxHeapSize = '16G'
 
         testLogging {
             events "passed"
         }
     }
 
-    tasks.named("compileTestJava") {
-        java {
-//            toolchain {
-//                languageVersion = JavaLanguageVersion.of(17)
-//            }
-        }
-    }
-
 
     def javadocConfig = {
         options {
-            links(
-//                    'https://docs.oracle.com/javase/8/docs/api',
-//                    'https://hub.spigotmc.org/javadocs/spigot/',
-//                    'https://javadoc.io/doc/org.jetbrains/annotations/19.0.0'
-            )
+            links 'https://hub.spigotmc.org/javadocs/spigot/'
             addStringOption('Xdoclint:none', '-quiet')
-            exclude 'com/jeff_media/lunatic/nms/**'
+            tags "nms:a:Requires NMS support"
         }
     }
 
@@ -82,20 +69,14 @@ subprojects {
     }
 
 
-    javadoc { configure javadocConfig }
+    javadoc {
+        configure javadocConfig
+    }
     aggregateJavadoc {
         configure javadocConfig
     }
 
-    java {
-        withJavadocJar()
-    }
     String moduleName = it.name
-
-//    shadowJar {
-//        archiveClassifier.set('')
-//        archiveFileName.set("lunatic-" + moduleName + this.version)
-//    }
 
     moduleName = "lunatic-" + moduleName
 
@@ -125,9 +106,8 @@ subprojects {
 dependencies {
     implementation project(':core')
     implementation project(':data-structures')
-    implementation project(':nms-generic')
-    implementation project(path: ':nms-1.19.4', configuration: 'reobf')
-    implementation project(':nms-1.16.5')
+    implementation project(':nms:generic')
+    implementation project(path: ':nms:1.19.4', configuration: 'reobf')
 }
 
 shadowJar {

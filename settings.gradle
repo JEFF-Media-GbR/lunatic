@@ -1,6 +1,5 @@
 rootProject.name = 'lunatic'
 include 'core'
 include 'data-structures'
-include 'nms-generic'
-include 'nms-1.19.4'
-include 'nms-1.16.5'
+include 'nms:generic'
+include 'nms:1.19.4'

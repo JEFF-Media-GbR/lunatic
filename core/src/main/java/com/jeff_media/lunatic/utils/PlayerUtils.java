@@ -21,6 +21,8 @@ public class PlayerUtils {
      * Unlike {@link Player#playEffect(EntityEffect)}, this will only be shown to the affected player.
      *
      * @param player Player to play the animation to
+     *
+     * @nms
      */
     public static void playTotemAnimation(@NotNull final Player player) {
         playTotemAnimation(player, null);
@@ -32,6 +34,8 @@ public class PlayerUtils {
      *
      * @param player          Player to play the animation to
      * @param customModelData Custom model data to use, or null to not use any custom model data
+     *
+     * @nms
      */
     public static void playTotemAnimation(@NotNull final Player player, @Nullable final Integer customModelData) {
         final ItemStack totem = new ItemStack(Material.TOTEM_OF_UNDYING);

@@ -2,7 +2,6 @@ package com.jeff_media.lunatic;
 
 import com.jeff_media.lunatic.exceptions.NMSNotSupportedException;
 import com.jeff_media.lunatic.nms.LunaticNMSHandler;
-import com.jeff_media.lunatic.nms.v1_16_5_NMSHandler;
 import com.jeff_media.lunatic.nms.v1_19_4_NMSHandler;
 import org.bukkit.plugin.Plugin;
 
@@ -37,6 +36,10 @@ public class Lunatic {
         return plugin;
     }
 
+    /**
+     * Enables NMS features
+     * @throws NMSNotSupportedException
+     */
     public static void enableNmsFeatures() throws NMSNotSupportedException {
         ensureInit();
         nmsHandler = createNmsHandler();
@@ -55,9 +58,6 @@ public class Lunatic {
             case "1.19.4":
                 return new v1_19_4_NMSHandler();
                 // ...
-            case "1.16.5":
-            case "1.16.4":
-                return new v1_16_5_NMSHandler();
             default:
                 throw new NMSNotSupportedException(version);
         }

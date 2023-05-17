@@ -9,18 +9,14 @@ dependencies {
     compileOnly project(':data-structures')
     testImplementation project(':data-structures')
 
-    compileOnly project(':nms-generic')
-    testImplementation project(':nms-generic')
+    compileOnly project(':nms:generic')
+    testImplementation project(':nms:generic')
 
-    compileOnly project(':nms-1.19.4')
-    testImplementation project(':nms-1.19.4')
-
-    compileOnly project(':nms-1.16.5')
-    testImplementation project(':nms-1.16.5')
+    compileOnly project(':nms:1.19.4')
+    testImplementation project(':nms:1.19.4')
 
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    withJavadocJar()
 }
