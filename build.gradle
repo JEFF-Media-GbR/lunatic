@@ -127,8 +127,8 @@ publishing {
     repositories {
         maven {
             credentials {
-                username "haha"
-                password "123"
+                username "$jeffMediaPublicUser"
+                password "$jeffMediaPublicPassword"
             }
             url = 'https://repo.jeff-media.com/public'
         }
