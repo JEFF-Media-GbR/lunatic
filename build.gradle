@@ -113,7 +113,7 @@ subprojects {
 }
 
 dependencies {
-    implementation project(':core')
+    implementation project(':bukkit')
     implementation project(':data-structures')
     implementation project(':nms:generic')
     implementation project(path: ':nms:1.19.4', configuration: 'reobf')
