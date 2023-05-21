@@ -53,7 +53,7 @@ subprojects {
     }
 
     compileJava {
-        options.release = 8
+        options.release = 17
     }
 
 
@@ -78,12 +78,12 @@ subprojects {
     }
 
 
-//    javadoc {
-//        configure javadocConfig
-//    }
-//    aggregateJavadoc {
-//        configure javadocConfig
-//    }
+    javadoc {
+        configure javadocConfig
+    }
+    aggregateJavadoc {
+        configure javadocConfig
+    }
 
     String moduleName = it.name
 
