@@ -50,10 +50,16 @@ subprojects {
         testLogging {
             events "passed"
         }
+
     }
 
     compileJava {
         options.release = 17
+    }
+
+    test {
+        dependsOn cleanTest
+        testLogging.showStandardStreams = true
     }
 
 

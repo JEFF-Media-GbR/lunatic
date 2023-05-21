@@ -14,6 +14,7 @@ import java.util.Objects;
 /**
  * Player-related utilities
  */
+@SuppressWarnings("unused")
 public class PlayerUtils {
 
     /**
