@@ -1,16 +1,13 @@
 plugins {
     id "java"
     id "com.github.johnrengelman.shadow" version "7.1.0"
+    id "io.freefair.aggregate-javadoc" version "6.6.3"
+    id "io.freefair.aggregate-javadoc-jar" version "6.6.3"
     id 'maven-publish'
 }
 
 group = 'com.jeff_media.lunatic'
 version = '1.8-SNAPSHOT'
-
-def javadocConfig = {
-    options.tags = ["nms:a:Requires NMS support"]
-    options.links 'https://hub.spigotmc.org/javadocs/spigot/'
-}
 
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
@@ -39,6 +36,12 @@ subprojects {
         }
     }
 
+    tasks.register('javadocJar', Jar) {
+        dependsOn javadoc
+        archiveClassifier.set('javadoc')
+        from javadoc.destinationDir
+    }
+
     tasks.named('test', Test) {
         useJUnitPlatform()
 
@@ -49,21 +52,40 @@ subprojects {
         }
     }
 
+    compileJava {
+        options.release = 8
+    }
+
+
+    def javadocConfig = {
+        options {
+            links 'https://hub.spigotmc.org/javadocs/spigot/'
+            addStringOption('Xdoclint:none', '-quiet')
+            tags "nms:a:Requires NMS support"
+        }
+    }
+
     dependencies {
         compileOnly 'org.jetbrains:annotations:24.0.1'
         testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+
     }
 
-    javadoc.configure(javadocConfig)
-
     java {
-        withJavadocJar()
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(17))
         }
     }
 
-    def moduleName = it.name
+
+//    javadoc {
+//        configure javadocConfig
+//    }
+//    aggregateJavadoc {
+//        configure javadocConfig
+//    }
+
+    String moduleName = it.name
 
     moduleName = "lunatic-" + moduleName
 
@@ -75,13 +97,14 @@ subprojects {
                 version = this.version
 
                 publication.artifact(jar)
+                publication.artifact(javadocJar)
             }
         }
         repositories {
             maven {
                 credentials {
-                    username "haha"
-                    password "123"
+                    username = "$jeffMediaPublicUser"
+                    password = "$jeffMediaPublicPassword"
                 }
                 url = 'https://repo.jeff-media.com/public'
             }
@@ -100,28 +123,15 @@ shadowJar {
     archiveClassifier.set('')
 }
 
-def exportedProjects = [
-        ":",
-        ":core",
-        ":data-structures",
-        ":nms"
-]
-
-task allJavadoc(type: Javadoc) {
-    source exportedProjects.collect { project(it).sourceSets.main.allJava }
-    classpath = files(exportedProjects.collect { project(it).sourceSets.main.compileClasspath })
-    destinationDir = file("${buildDir}/docs/javadoc-all")
-    configure(javadocConfig)
-}
-
 build {
-    dependsOn(shadowJar)
+    dependsOn(shadowJar, aggregateJavadoc)
 }
 
 publishing {
     publications {
         shadow(MavenPublication) { publication ->
             project.shadow.component(publication)
+            publication.artifact(aggregateJavadocJar)
         }
     }
     repositories {
