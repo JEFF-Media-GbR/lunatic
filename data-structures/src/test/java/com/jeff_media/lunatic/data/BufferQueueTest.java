@@ -3,7 +3,7 @@ package com.jeff_media.lunatic.data;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TestBufferQueue {
+public class BufferQueueTest {
 
     @Test
     public void testBuffer() {

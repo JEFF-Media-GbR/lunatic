@@ -1,4 +1,5 @@
 rootProject.name = 'lunatic'
+include 'core-utils'
 include 'bukkit'
 include 'data-structures'
 include 'nms:generic'

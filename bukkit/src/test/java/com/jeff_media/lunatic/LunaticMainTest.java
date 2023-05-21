@@ -3,7 +3,7 @@ package com.jeff_media.lunatic;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TestLunaticMain extends GenericTest {
+public class LunaticMainTest extends GenericTest {
 
     @Test
     public void testInit() {
