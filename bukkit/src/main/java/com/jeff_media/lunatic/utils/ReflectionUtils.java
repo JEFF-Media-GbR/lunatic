@@ -12,7 +12,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.security.CodeSource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -22,30 +28,51 @@ import java.util.zip.ZipInputStream;
 @SuppressWarnings("unused")
 public final class ReflectionUtils {
 
-    @Nullable private static String nmsVersion;
-    @NotNull private static final Map<String, Class<?>> CLASSES = new HashMap<>();
-    @NotNull private static final Table<Class<?>, String, Method> METHODS_NO_ARGS = HashBasedTable.create();
-    @NotNull private static final Table<Class<?>, MethodParameters, Method> METHODS_WITH_ARGS = HashBasedTable.create();
-    @NotNull private static final Table<Class<?>, String, Field> FIELDS = HashBasedTable.create();
-    @NotNull private static final Map<Class<?>, Constructor<?>> CONSTRUCTORS_NO_ARGS = new HashMap<>();
-    @NotNull private static final Table<Class<?>, Parameters, Constructor<?>> CONSTRUCTOR_WITH_ARGS = HashBasedTable.create();
+    @NotNull
+    private static final Map<String, Class<?>> CLASSES = new HashMap<>();
+    @NotNull
+    private static final Table<Class<?>, String, Method> METHODS_NO_ARGS = HashBasedTable.create();
+    @NotNull
+    private static final Table<Class<?>, MethodParameters, Method> METHODS_WITH_ARGS = HashBasedTable.create();
+    @NotNull
+    private static final Table<Class<?>, String, Field> FIELDS = HashBasedTable.create();
+    @NotNull
+    private static final Map<Class<?>, Constructor<?>> CONSTRUCTORS_NO_ARGS = new HashMap<>();
+    @NotNull
+    private static final Table<Class<?>, Parameters, Constructor<?>> CONSTRUCTOR_WITH_ARGS = HashBasedTable.create();
+    @Nullable
+    private static String nmsVersion;
+
+    /**
+     * Utility class
+     */
+    private ReflectionUtils() {
+
+    }
 
     /**
      * Returns a list of all classes included in the jar file that provides the given class. The returned names use a
      * dot as a package separator instead of a slash so they can directly be used with {@link Class#forName(String)}.
      */
     @NotNull
-    public static List<String> getAllClassNames(@NotNull final Class<?> clazz) {
+    public static List<String> getAllClassNames(
+            @NotNull
+            final Class<?> clazz) {
         final CodeSource source = clazz.getProtectionDomain().getCodeSource();
-        if (source == null) return Collections.emptyList();
+        if (source == null) {
+            return Collections.emptyList();
+        }
         final URL url = source.getLocation();
-        try (
-                final ZipInputStream zip = new ZipInputStream(url.openStream())) {
+        try (final ZipInputStream zip = new ZipInputStream(url.openStream())) {
             final List<String> classes = new ArrayList<>();
             while (true) {
                 final ZipEntry entry = zip.getNextEntry();
-                if (entry == null) break;
-                if (entry.isDirectory()) continue;
+                if (entry == null) {
+                    break;
+                }
+                if (entry.isDirectory()) {
+                    continue;
+                }
                 final String name = entry.getName();
                 if (name.endsWith(".class")) {
                     classes.add(name.replace('/', '.').substring(0, name.length() - 6));
@@ -56,7 +83,6 @@ public final class ReflectionUtils {
             return Collections.emptyList();
         }
     }
-
 
     /**
      * Gets a class
@@ -107,7 +133,7 @@ public final class ReflectionUtils {
     /**
      * Gets whether a method is already cached
      *
-     * @param clazz The class
+     * @param clazz      The class
      * @param methodName The method name
      * @return Whether the method is already cached
      */
@@ -137,7 +163,9 @@ public final class ReflectionUtils {
     /**
      * Gets whether a method with parameters is already cached
      */
-    public static boolean isMethodCached(final @NotNull Class<?> clazz, final @NotNull String methodName, final @NotNull Class<?>... params) {
+    public static boolean isMethodCached(final @NotNull Class<?> clazz,
+                                         final @NotNull String methodName,
+                                         final @NotNull Class<?>... params) {
         return METHODS_WITH_ARGS.contains(clazz, new MethodParameters(methodName, params));
     }
 
@@ -146,7 +174,9 @@ public final class ReflectionUtils {
      *
      * @return The method, or null if not found
      */
-    public static Method getMethod(final @NotNull Class<?> clazz, final @NotNull String methodName, final @NotNull Class<?>... params) {
+    public static Method getMethod(final @NotNull Class<?> clazz,
+                                   final @NotNull String methodName,
+                                   final @NotNull Class<?>... params) {
         final MethodParameters methodParameters = new MethodParameters(methodName, params);
         if (METHODS_WITH_ARGS.contains(clazz, methodParameters)) {
             return METHODS_WITH_ARGS.get(clazz, methodParameters);
@@ -164,7 +194,9 @@ public final class ReflectionUtils {
     /**
      * Sets an object's field to the given value
      */
-    public static void setFieldValue(final @NotNull Object object, final @NotNull String fieldName, final @Nullable Object value) {
+    public static void setFieldValue(final @NotNull Object object,
+                                     final @NotNull String fieldName,
+                                     final @Nullable Object value) {
         setFieldValue(object.getClass(), object, fieldName, value);
     }
 
@@ -176,7 +208,10 @@ public final class ReflectionUtils {
      * @param fieldName Name of the field to set
      * @param value     Value to set the field to
      */
-    public static void setFieldValue(final @NotNull Class<?> clazz, final @Nullable Object object, final @NotNull String fieldName, final @Nullable Object value) {
+    public static void setFieldValue(final @NotNull Class<?> clazz,
+                                     final @Nullable Object object,
+                                     final @NotNull String fieldName,
+                                     final @Nullable Object value) {
         try {
             final Field field = getField(clazz, fieldName);
             java.util.Objects.requireNonNull(field).set(object, value);
@@ -210,7 +245,9 @@ public final class ReflectionUtils {
      * @param object Object to get the field value from, or null if it's a static field
      * @throws RuntimeException if an IllegalAccessException is thrown
      */
-    public static Object getFieldValue(final @NotNull Class<?> clazz, final @NotNull String fieldName, final @Nullable Object object) {
+    public static Object getFieldValue(final @NotNull Class<?> clazz,
+                                       final @NotNull String fieldName,
+                                       final @Nullable Object object) {
         Field field = getField(clazz, fieldName);
         if (field == null) {
             throw new NullPointerException("Field " + fieldName + " not found in " + clazz);
@@ -248,12 +285,13 @@ public final class ReflectionUtils {
      *
      * @return The constructor, or null if not found
      */
-    public static Constructor<?> getConstructor(final @NotNull Class<?> clazz) {
+    @SuppressWarnings("unchecked")
+    public static <T> Constructor<T> getConstructor(final @NotNull Class<T> clazz) {
         if (CONSTRUCTORS_NO_ARGS.containsKey(clazz)) {
-            return CONSTRUCTORS_NO_ARGS.get(clazz);
+            return (Constructor<T>) CONSTRUCTORS_NO_ARGS.get(clazz);
         }
         try {
-            final Constructor<?> constructor = clazz.getDeclaredConstructor();
+            final Constructor<T> constructor = clazz.getDeclaredConstructor();
             constructor.setAccessible(true);
             CONSTRUCTORS_NO_ARGS.put(clazz, constructor);
             return constructor;
@@ -267,19 +305,88 @@ public final class ReflectionUtils {
      *
      * @return The constructor, or null if not found
      */
-    public static Constructor<?> getConstructor(final @NotNull Class<?> clazz, final Class<?> ... params) {
+    @SuppressWarnings("unchecked")
+    public static <T> Constructor<T> getConstructor(final @NotNull Class<T> clazz, final Class<?>... params) {
         final Parameters constructorParams = new Parameters(params);
         if (CONSTRUCTOR_WITH_ARGS.contains(clazz, constructorParams)) {
-            return CONSTRUCTOR_WITH_ARGS.get(clazz, constructorParams);
+            return (Constructor<T>) CONSTRUCTOR_WITH_ARGS.get(clazz, constructorParams);
         }
         try {
-            final Constructor<?> constructor = clazz.getDeclaredConstructor(params);
+            final Constructor<T> constructor = clazz.getDeclaredConstructor(params);
             constructor.setAccessible(true);
             CONSTRUCTOR_WITH_ARGS.put(clazz, constructorParams, constructor);
             return constructor;
         } catch (final NoSuchMethodException e) {
             return null;
         }
+    }
+
+    /**
+     * Checks if a class exists
+     *
+     * @param name Fully qualified class name
+     * @return true if the class exists, otherwise false
+     */
+    public static boolean classExists(
+            @NotNull
+            final String name) {
+        return getClass(name) != null;
+    }
+
+    public static int getCurrentLineNumber() {
+        return getCurrentLineNumber(1);
+    }
+
+    /**
+     * Returns the current line number from which this method was called from
+     */
+    public static int getCurrentLineNumber(final int offset) {
+        return Thread.currentThread().getStackTrace()[2 + offset].getLineNumber();
+    }
+
+    public static String getCurrentClassName() {
+        return getCurrentClassName(1);
+    }
+
+    /**
+     * Returns the current class name from which this method was called from
+     */
+    public static String getCurrentClassName(int offset) {
+        return Thread.currentThread().getStackTrace()[2 + offset].getClassName();
+    }
+
+    public static Class<?> getCurrentClass() {
+        return getCurrentClass(1);
+    }
+
+    public static Class<?> getCurrentClass(final int offset) {
+        try {
+            return Class.forName(Thread.currentThread().getStackTrace()[2 + offset].getClassName());
+        } catch (final ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Returns the current class file name from which this method was called from
+     */
+    public static String getCurrentClassFileName() {
+        return getCurrentClassFileName(1);
+    }
+
+    public static String getCurrentClassFileName(int offset) {
+        return Thread.currentThread().getStackTrace()[2 + offset].getFileName();
+    }
+
+    public static String getCurrentMethodName() {
+        return getCurrentMethodName(1);
+    }
+
+    /**
+     * Returns the current method name from which this method was called from
+     */
+    public static String getCurrentMethodName(int offset) {
+        return Thread.currentThread().getStackTrace()[2 + offset].getMethodName();
     }
 
     private static class Parameters {
@@ -297,8 +404,12 @@ public final class ReflectionUtils {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             Parameters that = (Parameters) o;
             return Arrays.equals(parameterClazzes, that.parameterClazzes);
         }
@@ -316,9 +427,15 @@ public final class ReflectionUtils {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            if (!super.equals(o)) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            if (!super.equals(o)) {
+                return false;
+            }
             MethodParameters that = (MethodParameters) o;
             return name.equals(that.name);
         }
@@ -327,7 +444,6 @@ public final class ReflectionUtils {
         public int hashCode() {
             return Objects.hash(super.hashCode(), name);
         }
-
-
     }
+
 }

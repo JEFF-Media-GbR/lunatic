@@ -15,17 +15,25 @@ import java.util.Objects;
  * Player-related utilities
  */
 @SuppressWarnings("unused")
-public class PlayerUtils {
+public final class PlayerUtils {
+
+    /**
+     * Utility class
+     */
+    private PlayerUtils() {
+
+    }
 
     /**
      * Plays the totem of undying animation to a given player. This is the same as <pre>playTotemAnimation(player, null)</pre>
      * Unlike {@link Player#playEffect(EntityEffect)}, this will only be shown to the affected player.
      *
      * @param player Player to play the animation to
-     *
      * @nms
      */
-    public static void playTotemAnimation(@NotNull final Player player) {
+    public static void playTotemAnimation(
+            @NotNull
+            final Player player) {
         playTotemAnimation(player, null);
     }
 
@@ -35,10 +43,13 @@ public class PlayerUtils {
      *
      * @param player          Player to play the animation to
      * @param customModelData Custom model data to use, or null to not use any custom model data
-     *
      * @nms
      */
-    public static void playTotemAnimation(@NotNull final Player player, @Nullable final Integer customModelData) {
+    public static void playTotemAnimation(
+            @NotNull
+            final Player player,
+            @Nullable
+            final Integer customModelData) {
         final ItemStack totem = new ItemStack(Material.TOTEM_OF_UNDYING);
         final ItemMeta meta = totem.getItemMeta();
         Objects.requireNonNull(meta).setCustomModelData(customModelData);

@@ -12,15 +12,8 @@ public class ByteCounter implements DataOutput {
     private int bytes = 0;
 
     /**
-     * Get the number of bytes written
-     * @return Number of bytes written
-     */
-    public int getBytes() {
-        return bytes;
-    }
-
-    /**
      * Get the number of bytes required to store the specified string in UTF-8
+     *
      * @param s String to check
      * @return Number of bytes required to store the specified string in UTF-8
      */
@@ -30,13 +23,24 @@ public class ByteCounter implements DataOutput {
         for (char c : chars) {
             if (c >= 0x0001 && c <= 0x007F) {
                 length++;
-            } else if (c > 0x07FF) {
+            }
+            else if (c > 0x07FF) {
                 length += 3;
-            } else {
+            }
+            else {
                 length += 2;
             }
         }
         return length;
+    }
+
+    /**
+     * Get the number of bytes written
+     *
+     * @return Number of bytes written
+     */
+    public int getBytes() {
+        return bytes;
     }
 
     @Override

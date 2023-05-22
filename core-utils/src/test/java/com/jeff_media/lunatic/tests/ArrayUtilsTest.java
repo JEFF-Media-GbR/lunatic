@@ -20,15 +20,15 @@ public class ArrayUtilsTest {
 
     @Test
     public void testRemoveAtIndex() {
-        Character[] test = new Character[] {'t','e','s','t'};
-        Character[] tet = new Character[] {'t','e','t'};
+        Character[] test = new Character[]{'t', 'e', 's', 't'};
+        Character[] tet = new Character[]{'t', 'e', 't'};
         Assertions.assertArrayEquals(tet, ArrayUtils.removeAtIndex(test, 2));
     }
 
     @Test
     public void testAddAfter() {
-        Character[] test = new Character[] {'t','e','s','t'};
-        Character[] test2 = new Character[] {'t','e','s','t','2'};
+        Character[] test = new Character[]{'t', 'e', 's', 't'};
+        Character[] test2 = new Character[]{'t', 'e', 's', 't', '2'};
         Assertions.assertArrayEquals(test2, ArrayUtils.addAfter(test, '2'));
     }
 }

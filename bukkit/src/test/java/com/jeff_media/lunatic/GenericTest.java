@@ -4,10 +4,7 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
-
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 public class GenericTest {
@@ -24,15 +21,13 @@ public class GenericTest {
     }
 
     @BeforeEach
-    public void setUp()
-    {
+    public void setUp() {
         server = MockBukkit.mock();
         plugin = MockBukkit.createMockPlugin("LunaticTest");
     }
 
     @AfterEach
-    public void tearDown()
-    {
+    public void tearDown() {
         MockBukkit.unmock();
     }
 

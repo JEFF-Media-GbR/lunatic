@@ -17,8 +17,8 @@
 
 package com.jeff_media.lunatic.utils;
 
-
 import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
@@ -54,7 +54,9 @@ public final class ArrayUtils {
      * @param <T>           Array's component type
      * @return Array of the given class type with length 0
      */
-    public static <T> T[] createArray(@NotNull final Class<T> componentType) {
+    public static <T> T[] createArray(
+            @NotNull
+            final Class<T> componentType) {
         return createArray(componentType, 0);
     }
 
@@ -67,7 +69,9 @@ public final class ArrayUtils {
      * @return Array of the given class type with the given length
      */
     @SuppressWarnings("unchecked")
-    public static <T> T[] createArray(@NotNull final Class<T> componentType, final int length) {
+    public static <T> T[] createArray(
+            @NotNull
+            final Class<T> componentType, final int length) {
         return (T[]) Array.newInstance(componentType, length);
     }
 

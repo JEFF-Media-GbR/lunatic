@@ -8,19 +8,26 @@ import org.bukkit.plugin.Plugin;
 /**
  * Main class for Lunatic
  */
+@SuppressWarnings("unused")
 public class Lunatic {
 
     private static Plugin plugin;
     private static LunaticNMSHandler nmsHandler;
 
-    private Lunatic() {}
+    /**
+     * Utility class
+     */
+    private Lunatic() {
+
+    }
 
     /**
      * Initializes Lunatic
+     *
      * @param plugin Plugin instance
      */
     public static void init(Plugin plugin) {
-        if(Lunatic.plugin != null) {
+        if (Lunatic.plugin != null) {
             throw new IllegalStateException("Lunatic is already initialized");
         }
 
@@ -29,6 +36,7 @@ public class Lunatic {
 
     /**
      * Get the plugin instance
+     *
      * @return Plugin instance
      */
     public static Plugin getPlugin() {
@@ -38,7 +46,8 @@ public class Lunatic {
 
     /**
      * Enables NMS features
-     * @throws NMSNotSupportedException
+     *
+     * @throws NMSNotSupportedException If the current Minecraft version is not supported
      */
     public static void enableNmsFeatures() throws NMSNotSupportedException {
         ensureInit();
@@ -46,7 +55,7 @@ public class Lunatic {
     }
 
     public static LunaticNMSHandler getNmsHandler() {
-        if(nmsHandler == null) {
+        if (nmsHandler == null) {
             throw new IllegalStateException("NMS features are not enabled yet. Call Lunatic#enableNmsFeatures() first.");
         }
         return nmsHandler;
@@ -57,14 +66,13 @@ public class Lunatic {
         switch (version) {
             case "1.19.4":
                 return new v1_19_4_NMSHandler();
-                // ...
             default:
                 throw new NMSNotSupportedException(version);
         }
     }
 
     private static void ensureInit() {
-        if(plugin == null) {
+        if (plugin == null) {
             throw new IllegalStateException("Lunatic is not initialized yet. Call Lunatic#init(Plugin) first.");
         }
     }

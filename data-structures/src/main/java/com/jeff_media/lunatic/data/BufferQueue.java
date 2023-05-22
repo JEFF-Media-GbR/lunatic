@@ -13,6 +13,7 @@ public class BufferQueue<T> {
 
     /**
      * Create a new BufferQueue instance
+     *
      * @param size Size of the buffer
      */
     @SuppressWarnings("unchecked")
@@ -23,13 +24,13 @@ public class BufferQueue<T> {
 
     /**
      * Add an item at the top of the buffer
+     *
      * @param item Item to add
      */
     public void add(@Nullable T item) {
         buffer[index] = item;
         index = (index + 1) % size;
     }
-
 
     public @Nullable T get() {
         return buffer[index];

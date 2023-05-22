@@ -22,7 +22,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.util.Objects;
 
 /**
@@ -62,7 +67,10 @@ public class LunaticConfig extends YamlConfiguration {
      * @param folder   folder to save the config in
      * @param filename filename of the config
      */
-    public LunaticConfig(@NotNull Plugin plugin, @NotNull File folder, @NotNull final String filename) {
+    public LunaticConfig(@NotNull Plugin plugin,
+                         @NotNull File folder,
+                         @NotNull
+                         final String filename) {
         this.plugin = plugin;
         this.filename = filename;
         if (!folder.exists()) {
@@ -106,7 +114,9 @@ public class LunaticConfig extends YamlConfiguration {
         } catch (final IOException exception) {
             new IllegalArgumentException("Could not find or load file " + filename, exception).printStackTrace();
         } catch (final InvalidConfigurationException exception) {
-            plugin.getLogger().severe("Your config file " + filename + " is invalid, using default values now. Please fix the below mentioned errors and try again:");
+            plugin.getLogger()
+                    .severe("Your config file " + filename +
+                            " is invalid, using default values now. Please fix the below mentioned errors and try again:");
             exception.printStackTrace();
         }
     }
@@ -115,7 +125,8 @@ public class LunaticConfig extends YamlConfiguration {
         if (!file.exists()) {
             File parent = file.getParentFile();
             if (parent != null && !parent.exists() && !parent.mkdirs()) {
-                throw new UncheckedIOException(new IOException("Could not create directory " + parent.getAbsolutePath()));
+                throw new UncheckedIOException(new IOException(
+                        "Could not create directory " + parent.getAbsolutePath()));
 
             }
             plugin.saveResource(filename, false);

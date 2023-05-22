@@ -10,7 +10,15 @@ import java.util.Objects;
 /**
  * World related methods
  */
+@SuppressWarnings("unused")
 public final class WorldUtils {
+
+    /**
+     * Utility class
+     */
+    private WorldUtils() {
+
+    }
 
     /**
      * Gets the default world
@@ -38,14 +46,9 @@ public final class WorldUtils {
      * @param notifyPlayers Whether to send a time update packet to all players
      * @nms
      */
-    public static void setFullTimeWithoutTimeSkipEvent(@NotNull final World world, final long time, final boolean notifyPlayers) {
+    public static void setFullTimeWithoutTimeSkipEvent(
+            @NotNull
+            final World world, final long time, final boolean notifyPlayers) {
         Lunatic.getNmsHandler().setFullTimeWithoutTimeSkipEvent(world, time, notifyPlayers);
-    }
-
-    /**
-     * Gets the lowest possible building height for a world. It's the same as {@link World#getMinHeight()} but also works on 1.16.4 and earlier
-     */
-    public static int getWorldMinHeight(final @NotNull World world) {
-        return HAS_WORLD_MIN_HEIGHT_METHOD ? world.getMinHeight() : 0;
     }
 }
