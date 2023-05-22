@@ -31,8 +31,8 @@ public class ServerListPingEventFactory {
                 CONSTRUCTOR_INVOKER = new v1_18_Invoker();
             }
         } catch (Exception exception) {
-            // Couldn't find any constructor
-            throw new RuntimeException("Couldn't find any constructor for ServerListPingEvent", exception);
+            throw new RuntimeException("Couldn't find any (working) constructor for ServerListPingEvent on version " + McVersion.current(),
+                    exception);
         }
     }
 

@@ -7,6 +7,7 @@ import java.io.DataOutput;
 /**
  * A simple {@link DataOutput} implementation that counts the number of bytes written and discards the actual data
  */
+@SuppressWarnings("unused")
 public class ByteCounter implements DataOutput {
 
     private int bytes = 0;
@@ -49,12 +50,14 @@ public class ByteCounter implements DataOutput {
     }
 
     @Override
-    public void write(final byte @NotNull [] bytes) {
+    public void write(final byte[] bytes) {
         this.bytes += bytes.length;
     }
 
     @Override
-    public void write(final byte @NotNull [] bytes, final int off, final int len) {
+    public void write(
+            @NotNull
+            final byte[] bytes, final int off, final int len) {
         this.bytes += len;
     }
 
@@ -109,7 +112,9 @@ public class ByteCounter implements DataOutput {
     }
 
     @Override
-    public void writeUTF(final String s) {
+    public void writeUTF(
+            @NotNull
+            final String s) {
         bytes += 2 + getUTFLength(s);
     }
 }

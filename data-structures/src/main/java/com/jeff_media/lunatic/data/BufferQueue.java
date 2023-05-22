@@ -27,7 +27,9 @@ public class BufferQueue<T> {
      *
      * @param item Item to add
      */
-    public void add(@Nullable T item) {
+    public void add(
+            @Nullable
+            T item) {
         buffer[index] = item;
         index = (index + 1) % size;
     }

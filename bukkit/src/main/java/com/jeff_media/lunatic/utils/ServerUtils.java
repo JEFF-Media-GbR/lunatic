@@ -18,6 +18,7 @@
 package com.jeff_media.lunatic.utils;
 
 import com.jeff_media.lunatic.Lunatic;
+import com.jeff_media.lunatic.data.ServerLifePhase;
 import com.jeff_media.lunatic.data.TPS;
 import com.jeff_media.lunatic.internal.ServerListPingEventFactory;
 import org.bukkit.Bukkit;
@@ -118,6 +119,8 @@ public final class ServerUtils {
 
     /**
      * Gets the server's last {@link TPS}
+     *
+     * @nms
      */
     public static TPS getTps() {
         return TPS.of(Lunatic.getNmsHandler().getTPS());
@@ -128,7 +131,7 @@ public final class ServerUtils {
     }
 
     /**
-     * Returns the server's current life phase - when you call this in onEnable or onDisable, and it returns RUNNING, it means the server is reloading.
+     * Returns the server's current life phase. Can be used to detect a /reload in onEnable or onDisable.
      *
      * @return Server's life phase
      */
@@ -141,7 +144,7 @@ public final class ServerUtils {
         else if (currentTicket == -2) {
             return ServerLifePhase.UNKNOWN;
         }
-        return Lunatic.getNmsHandler().isServerRunning() ? ServerLifePhase.RUNNING : ServerLifePhase.SHUTDOWN;
+        return Lunatic.getNmsHandler().isServerRunning() ? ServerLifePhase.RUNNING_OR_RELOADING : ServerLifePhase.SHUTDOWN;
     }
 
     /**
@@ -166,16 +169,6 @@ public final class ServerUtils {
     @NotNull
     public File getServerFolder() {
         return Paths.get("").toAbsolutePath().toFile();
-    }
-
-    /**
-     * Represents the server's current life phase
-     */
-    public enum ServerLifePhase {
-        STARTUP,
-        RUNNING,
-        SHUTDOWN,
-        UNKNOWN
     }
 
 }

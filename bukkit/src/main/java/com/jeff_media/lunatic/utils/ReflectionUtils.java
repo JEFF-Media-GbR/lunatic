@@ -393,7 +393,9 @@ public final class ReflectionUtils {
         @NotNull
         private final Class<?>[] parameterClazzes;
 
-        private Parameters(@NotNull Class<?>... parameterClazzes) {
+        private Parameters(
+                @NotNull
+                Class<?>... parameterClazzes) {
             this.parameterClazzes = parameterClazzes;
         }
 

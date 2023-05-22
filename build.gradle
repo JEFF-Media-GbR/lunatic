@@ -68,11 +68,13 @@ subprojects {
             links 'https://hub.spigotmc.org/javadocs/spigot/'
             addStringOption('Xdoclint:none', '-quiet')
             tags "nms:a:Requires NMS support"
+            exclude "com/jeff_media/lunatic/internal/**"
+            exclude "com/jeff_media/lunatic/nms/**"
         }
     }
 
     dependencies {
-        compileOnly 'org.jetbrains:annotations:24.0.1'
+        compileOnly 'org.jetbrains:annotations-java5:23.0.0'
         testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
 
     }
@@ -118,8 +120,18 @@ subprojects {
     }
 }
 
+
+tasks.named('aggregateJavadoc', Javadoc) {
+    options {
+        title "Lunatic " + project.version
+        overview "javadoc/overview.html"
+    }
+}
+
+
 dependencies {
     implementation project(':bukkit')
+    implementation project(':core-utils')
     implementation project(':data-structures')
     implementation project(':nms:generic')
     implementation project(path: ':nms:1.19.4', configuration: 'reobf')

@@ -5,6 +5,8 @@ import com.jeff_media.lunatic.nms.LunaticNMSHandler;
 import com.jeff_media.lunatic.nms.v1_19_4_NMSHandler;
 import org.bukkit.plugin.Plugin;
 
+import java.util.logging.Logger;
+
 /**
  * Main class for Lunatic
  */
@@ -42,6 +44,15 @@ public class Lunatic {
     public static Plugin getPlugin() {
         ensureInit();
         return plugin;
+    }
+
+    /**
+     * Get the plugin logger
+     *
+     * @return Plugin logger
+     */
+    public static Logger getLogger() {
+        return getPlugin().getLogger();
     }
 
     /**

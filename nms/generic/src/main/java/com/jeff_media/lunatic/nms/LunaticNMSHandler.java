@@ -11,14 +11,17 @@ public interface LunaticNMSHandler {
      *
      * @param player Player to play the animation to
      */
-    void sendTotemAnimation(@NotNull Player player);
+    void sendTotemAnimation(
+            @NotNull
+            Player player);
 
     /**
      * Gets the default world name
      *
      * @return The default world name
      */
-    @NotNull String getDefaultWorldName();
+    @NotNull
+    String getDefaultWorldName();
 
     /**
      * Sets the full game time for a world without calling {@link org.bukkit.event.world.TimeSkipEvent}
@@ -27,7 +30,9 @@ public interface LunaticNMSHandler {
      * @param time          The time
      * @param notifyPlayers Whether to send a time update packet to all players in that world
      */
-    void setFullTimeWithoutTimeSkipEvent(@NotNull World world, long time, boolean notifyPlayers);
+    void setFullTimeWithoutTimeSkipEvent(
+            @NotNull
+            World world, long time, boolean notifyPlayers);
 
     /**
      * Checks whether the server is running

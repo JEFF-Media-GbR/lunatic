@@ -46,7 +46,9 @@ public class LunaticConfig extends YamlConfiguration {
      *
      * @param filename filename of the config
      */
-    public LunaticConfig(@NotNull String filename) {
+    public LunaticConfig(
+            @NotNull
+            String filename) {
         this(Lunatic.getPlugin(), Lunatic.getPlugin().getDataFolder(), filename);
     }
 
@@ -56,7 +58,11 @@ public class LunaticConfig extends YamlConfiguration {
      * @param folder   folder to save the config in
      * @param filename filename of the config
      */
-    public LunaticConfig(@NotNull File folder, @NotNull String filename) {
+    public LunaticConfig(
+            @NotNull
+            File folder,
+            @NotNull
+            String filename) {
         this(Lunatic.getPlugin(), folder, filename);
     }
 
@@ -67,10 +73,13 @@ public class LunaticConfig extends YamlConfiguration {
      * @param folder   folder to save the config in
      * @param filename filename of the config
      */
-    public LunaticConfig(@NotNull Plugin plugin,
-                         @NotNull File folder,
-                         @NotNull
-                         final String filename) {
+    public LunaticConfig(
+            @NotNull
+            Plugin plugin,
+            @NotNull
+            File folder,
+            @NotNull
+            final String filename) {
         this.plugin = plugin;
         this.filename = filename;
         if (!folder.exists()) {

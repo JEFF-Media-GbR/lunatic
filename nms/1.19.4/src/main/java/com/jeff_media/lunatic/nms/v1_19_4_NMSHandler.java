@@ -18,6 +18,7 @@ public class v1_19_4_NMSHandler implements LunaticNMSHandler {
 
     private final DedicatedServer dedicatedServer = ((CraftServer) Bukkit.getServer()).getServer();
 
+    @SuppressWarnings("closeable/finalizer")
     public final ServerLevel toNms(final World world) {
         return ((CraftWorld) world).getHandle();
     }
@@ -27,7 +28,9 @@ public class v1_19_4_NMSHandler implements LunaticNMSHandler {
     }
 
     @Override
-    public void sendTotemAnimation(@NotNull Player player) {
+    public void sendTotemAnimation(
+            @NotNull
+            Player player) {
         ServerPlayer nmsPlayer = toNms(player);
         nmsPlayer.connection.send(new ClientboundEntityEventPacket(nmsPlayer, (byte) 35));
     }
