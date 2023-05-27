@@ -1,13 +1,12 @@
 plugins {
     id "java"
     id "com.github.johnrengelman.shadow" version "7.1.0"
-    id "io.freefair.aggregate-javadoc" version "6.6.3"
-    id "io.freefair.aggregate-javadoc-jar" version "6.6.3"
+    id "io.freefair.aggregate-javadoc-jar" version "8.0.1"
     id 'maven-publish'
 }
 
 group = 'com.jeff_media.lunatic'
-version = '1.8.1-SNAPSHOT'
+version = '1.8.2-SNAPSHOT'
 
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
