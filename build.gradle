@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.jeff_media.lunatic'
-version = '1.8-SNAPSHOT'
+version = '1.8.1-SNAPSHOT'
 
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
@@ -161,4 +161,8 @@ publishing {
             url = 'https://repo.jeff-media.com/public'
         }
     }
+}
+
+aggregateJavadocJar {
+    getDestinationDirectory().set(file(getBuildDir().toPath().resolve("docs")))
 }
